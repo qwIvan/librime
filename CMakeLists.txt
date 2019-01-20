@@ -89,6 +89,8 @@ endif()
 
 find_package(Threads)
 
+find_package(ICU COMPONENTS uc)
+
 find_package(Iconv)
 if (ICONV_FOUND)
   include_directories(${ICONV_INCLUDE_DIRS})

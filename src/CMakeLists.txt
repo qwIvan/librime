@@ -41,6 +41,7 @@ set(rime_core_deps
     ${CMAKE_THREAD_LIBS_INIT}
     ${rime_optional_deps})
 set(rime_extra_deps
+    ${ICU_LIBRARIES}
     ${ICONV_LIBRARIES}
     ${LevelDb_LIBRARY}
     ${Marisa_LIBRARY}

@@ -6,11 +6,11 @@ RIME_COMPILER_OPTIONS = CC=clang CXX=clang++ CXXFLAGS="-stdlib=libc++" LDFLAGS="
 all: release
 
 release:
-	cmake . -Bxbuild -GXcode -DBUILD_STATIC=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+	cmake . -Bxbuild -GXcode -DBUILD_STATIC=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/icu4c
 	cmake --build xbuild --config Release
 
 debug:
-	cmake . -Bxdebug -GXcode -DBUILD_STATIC=ON -DBUILD_SEPARATE_LIBS=ON
+	cmake . -Bxdebug -GXcode -DBUILD_STATIC=ON -DBUILD_SEPARATE_LIBS=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/icu4c
 	cmake --build xdebug --config Debug
 
 clean:
