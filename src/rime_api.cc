@@ -290,7 +290,10 @@ RIME_API Bool RimeGetContext(RimeSessionId session_id, RimeContext* context) {
         }
 		Config* config = schema->config();
 		an<ConfigList>  select_labels = config->GetList("menu/alternative_select_labels");
-		if (select_labels && (size_t)page_size <= select_labels->size() && ctx->IsNormal()) {
+		bool condition = (select_labels && (size_t)page_size <= select_labels->size());
+		if (!schema->schema_id().compare("sbjm"))
+			condition = (condition && ctx->IsNormal());
+		if (condition) {
 			context->select_labels = new char*[page_size];
 			for (size_t i = 0; i < (size_t)page_size; ++i) {
 				an<ConfigValue> value = select_labels->GetValueAt(i);

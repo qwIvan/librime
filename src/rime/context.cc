@@ -63,7 +63,7 @@ bool Context::HasMore() const {
 bool Context::IsNormal() const {
 	char c = input_[0];
 	bool isNormal = !(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == '`');
-	return isNormal;
+	return isNormal; 
 }
 
 bool Context::LenEven() const {
