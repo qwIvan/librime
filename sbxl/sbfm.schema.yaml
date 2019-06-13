@@ -1,0 +1,145 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: sbfm
+  name: "声笔飞码"
+  version: "8"
+  author:
+    - 戴石麟 <http://input.foruto.com/sbxlm>
+  dependencies:
+    - pinyin_simp
+    - bihua #笔画反查
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: simplification
+    reset: 0
+    states: [ 汉字, 漢字 ]
+  - name: ascii_punct
+    states: [ 。，, ．， ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - abc_segmentor@km
+    - "affix_segmentor@bihua_lookup"
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+    - "table_translator@bihua_lookup"
+  filters:
+    - simplifier
+    - uniquifier
+    - "reverse_lookup_filter@bihua_reverse_lookup"
+    
+menu:
+  alternative_select_labels:
+    - "1_"
+    - "2a"
+    - "3e"
+    - "4i"
+    - "5o"
+    - "6u"
+
+speller:
+  alphabet: "qwertasdfgzxcvbyuiophjklnmQWRTSDFGZXCVBYPHJKLNM"
+  initials: "qwrtsdfgzxcvbyphjklnm"
+  auto_select: true
+  auto_clear: max_length
+  max_code_length: 4
+
+translator:
+  dictionary: sbfm
+  enable_user_dict: true
+  enable_encoder: true
+  enable_sentence: false
+  strict_spelling: true
+  enable_completion: false
+  encode_commit_history: true
+  max_phrase_length: 5
+
+reverse_lookup:
+  dictionary: pinyin_simp
+  extra_tags:
+    - bihua_lookup
+  prefix: "`"
+  suffix: "'"
+  tips: 〔拼音〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+
+bihua_lookup:
+  dictionary: bihua
+  prefix:
+  suffix:
+  tag: bihua_lookup
+  tips: 〔笔画〕
+
+bihua_reverse_lookup:
+  dictionary: sbfm
+  overwrite_comment: false
+  tags:
+    - bihua_lookup
+    
+simplifier:
+  opencc_config: s2t.json
+
+punctuator:
+  half_shape:
+    ",": "，"
+    ".": "。"
+    "/": ["、", "//", "/*", "*/", "/**", "**/"]
+    ";": "；"
+    "\\": ["、", "\\", "＼"]
+    "!": ["！", "!"]
+    "'" : {pair: ['‘', '’']}
+    "\"": {pair: ["“", "”"]}
+    "$": ["￥", "￡", "＄", "$"]
+    "(": ["（", "〖", "【", "｛", "("]
+    ")": ["）", "〗", "】", "｝", ")"]
+    ":": {commit: "："}
+    "<": ["《", "〈", "『", "「", "<"]
+    ">": ["》", "〉", "』", "」", ">"]
+    "?": {commit: "？"}
+    "^": ["……", "…", "^"]
+    "&": ["——", "—", "&"]
+    "@": ["·", "@"]
+    "~": ["～", "~"]
+
+recognizer:
+  patterns:
+    bihua_lookup: "^[aeiou]+$"
+    bihua_reverse_lookup: "^[aeiou]+$"
+    reverse_lookup: "`[a-z]*'?$"
+    km: "^([qwrtsdfgzxcvbyphjklnm]{2}[aeiou]{0,2})|([qwrtsdfgzxcvbyphjklnm][QWRTSDFGZXCVBYPHJKLNM][a-z]{0,2})$"
+
+key_binder:
+  bindings:
+    - { when: paging, accept: comma, send: Page_Up }
+    - { when: has_more, accept: apostrophe, send: Page_Down }
+    - { when: has_more, accept: a, send: 2 }
+    - { when: has_more, accept: e, send: 3 }
+    - { when: has_more, accept: i, send: 4 }
+    - { when: has_more, accept: o, send: 5 }
+    - { when: has_more, accept: u, send: 6 }
