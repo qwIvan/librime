@@ -56,8 +56,21 @@ bool Context::HasMenu() const {
 bool Context::HasMore() const {
   if (composition_.empty())
     return false;
-  const auto& menu(composition_.back().menu);
+  const auto& menu(composition_.back().menu); 
   return menu && menu->candidate_count() > 1;
+}
+
+bool Context::IsNormal() const {
+	char c = input_[0];
+	bool isNormal = !(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == '`');
+	return isNormal;
+}
+
+bool Context::LenEven() const {
+	if (composition_.empty())
+		return false;
+	const auto& menu(composition_.back().menu);
+	return menu && menu->candidate_count() > 1 && (input_.length() % 2 == 0 || !islower(input_[0]));
 }
 
 an<Candidate> Context::GetSelectedCandidate() const {

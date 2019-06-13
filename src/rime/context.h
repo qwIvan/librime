@@ -36,6 +36,8 @@ class Context {
   bool IsComposing() const;
   bool HasMenu() const;
   bool HasMore() const;
+  bool IsNormal() const;
+  bool LenEven() const;
   an<Candidate> GetSelectedCandidate() const;
 
   bool PushInput(char ch);

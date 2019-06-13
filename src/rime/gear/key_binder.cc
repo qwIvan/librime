@@ -24,6 +24,7 @@ enum KeyBindingCondition {
   kWhenPaging,     // user has changed page
   kWhenHasMenu,    // at least one candidate
   kWhenHasMore,    // at least two candidates
+  kWhenLenEven,	   // code length is even
   kWhenComposing,  // input string is not empty
   kAlways,
 };
@@ -35,6 +36,7 @@ static struct KeyBindingConditionDef {
   { kWhenPaging,    "paging"    },
   { kWhenHasMenu,   "has_menu"  },
   { kWhenHasMore,   "has_more"  },
+  { kWhenLenEven,   "len_even"  },
   { kWhenComposing, "composing" },
   { kAlways,        "always"    },
   { kNever,         NULL        }
@@ -177,6 +179,10 @@ KeyBindingConditions::KeyBindingConditions(Context* ctx) {
 
   if (ctx->HasMore() && !ctx->get_option("ascii_mode")) {
     insert(kWhenHasMore);
+  }
+
+  if (ctx->LenEven() && !ctx->get_option("ascii_mode")) {
+	  insert(kWhenLenEven);
   }
 
   Composition& comp = ctx->composition();
